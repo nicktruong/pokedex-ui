@@ -1,15 +1,17 @@
 import { useAppDispatch } from "@/app/hooks";
-import { login } from "@/app/slices/authSlice";
-import { ILoginUser } from "@/common/interfaces";
+import { IRegisterUser } from "@/common/interfaces";
 import { ErrorMessage } from "@hookform/error-message";
 import { joiResolver } from "@hookform/resolvers/joi";
+import clsx from "clsx";
 import Joi from "joi";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { register as registerAccount } from "@/app/slices/authSlice";
 
 interface IFormInput {
   email: string;
   password: string;
+  name: string;
 }
 
 const schema = Joi.object<IFormInput>({
@@ -36,9 +38,19 @@ const schema = Joi.object<IFormInput>({
         "Password must have between 8 and 100 characters, at least 1 uppercase, 1 lower case, 1 number, and 1 special character",
       "any.required": "Password is required",
     }),
+  name: Joi.string()
+    .pattern(/([a-zA-Z]+\s?)+[a-zA-Z]$/)
+    .required()
+    .messages({
+      "string.base": "Name must be string",
+      "string.empty": "Name must not be empty",
+      "string.pattern.base":
+        "Name must not contain any number or special character",
+      "any.required": "Name is required",
+    }),
 });
 
-function SignIn() {
+function SignUp() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -53,18 +65,48 @@ function SignIn() {
   });
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    const payload: ILoginUser = {
+    const payload: IRegisterUser = {
       email: data.email,
+      name: data.name,
       password: data.password,
     };
 
-    await dispatch(login(payload));
-    navigate("/");
+    await dispatch(registerAccount(payload));
+    navigate("/sign-in");
   };
 
   return (
-    <form className="auth__form" onSubmit={handleSubmit(onSubmit)}>
-      <h1 className="auth__form-header">Sign In</h1>
+    <form
+      className={clsx("auth__form auth__form--signup")}
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <h1 className="auth__form-header">Sign Up</h1>
+
+      <div className="auth__form-group">
+        <label className="auth__form-label" htmlFor="name">
+          Name
+        </label>
+        <input
+          className="auth__form-input"
+          type="name"
+          id="name"
+          {...register("name")}
+        />
+        <ErrorMessage
+          errors={errors}
+          name="name"
+          render={({ messages }) => {
+            return (
+              messages &&
+              Object.entries(messages).map(([type, message]) => (
+                <p key={type} className="auth__form-error">
+                  {message}
+                </p>
+              ))
+            );
+          }}
+        />
+      </div>
 
       <div className="auth__form-group">
         <label className="auth__form-label" htmlFor="email">
@@ -119,11 +161,11 @@ function SignIn() {
       </div>
 
       <div className="auth__submit-container">
-        <button className="auth__submit-btn">Sign In</button>
+        <button className="auth__submit-btn">Sign Up</button>
         <p className="auth__submit-signin">
-          <span>Don't have an account?</span>{" "}
-          <Link to="/sign-up" className="auth__signin-link">
-            Sign Up
+          <span>Already have an account?</span>{" "}
+          <Link to="/sign-in" className="auth__signin-link">
+            Sign In
           </Link>
         </p>
       </div>
@@ -131,4 +173,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default SignUp;

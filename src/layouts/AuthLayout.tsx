@@ -1,10 +1,16 @@
-import { Outlet } from "react-router-dom";
+import { useAppSelector } from "@/app/hooks";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 function AuthLayout() {
-  return (
+  const isAuthenticated = useAppSelector(({ auth }) => auth.isAuthenticated);
+  const { pathname } = useLocation();
+
+  return isAuthenticated ? (
+    <Navigate to="/home" />
+  ) : (
     <section className="auth">
       <div className="auth__img-container">
-        <img className="auth__img" src="/assets/auth_img.png" alt="" />
+        <img className="auth__img" src={`/assets/${pathname}.jpg`} alt="" />
       </div>
 
       <div className="auth__form-container">
