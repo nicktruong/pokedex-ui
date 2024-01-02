@@ -33,11 +33,11 @@ export const login = createAsyncThunk(
   "auth/login",
   async (user: ILoginUser) => {
     return api
-      .post<ILoginResponse>("/login", {
+      .post<{ data: ILoginResponse }>("/login", {
         ...user,
         role: UserRole.CUSTOMER,
       })
-      .then(({ data }) => data);
+      .then(({ data }) => data.data);
   }
 );
 
@@ -45,8 +45,8 @@ export const register = createAsyncThunk(
   "auth/register",
   async (user: IRegisterUser) => {
     return api
-      .post<IUser>("/register", { ...user, role: UserRole.CUSTOMER })
-      .then(({ data }) => data);
+      .post<{ data: IUser }>("/register", { ...user, role: UserRole.CUSTOMER })
+      .then(({ data }) => data.data);
   }
 );
 

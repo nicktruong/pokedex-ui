@@ -6,7 +6,7 @@ function AuthLayout() {
   const { pathname } = useLocation();
 
   return isAuthenticated ? (
-    <Navigate to="/home" />
+    <Navigate to="/" />
   ) : (
     <section className="auth">
       <div className="auth__img-container">
