@@ -129,15 +129,10 @@
 }
 
 .auth__form {
-  padding: 5rem 4rem;
+  padding: 2rem;
   font-family: "Flexo", monospace;
-  min-height: 578.5px;
   display: flex;
   flex-direction: column;
-}
-
-.auth__form--signup {
-  min-height: 680.5px;
 }
 
 .auth__form-header {
@@ -152,7 +147,7 @@
 }
 
 .auth__form-group:first-of-type {
-  margin-top: 4rem;
+  margin-top: 2rem;
 }
 
 .auth__form-label {
@@ -183,7 +178,7 @@
 }
 
 .auth__submit-container {
-  margin-top: auto;
+  margin-top: 2rem;
 }
 
 .auth__submit-btn {
@@ -217,8 +212,25 @@
     max-width: 768px;
   }
 
+  .auth__form {
+    padding: 5rem 4rem;
+    min-height: 578.5px;
+  }
+
+  .auth__form--signup {
+    min-height: 680.5px;
+  }
+
+  .auth__form-group:first-of-type {
+    margin-top: 4rem;
+  }
+
   .auth__img-container {
     display: block;
+  }
+
+  .auth__submit-container {
+    margin-top: auto;
   }
 }
 

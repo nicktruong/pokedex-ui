@@ -1,4 +1,4 @@
-import { useAppDispatch } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { login } from "@/app/slices/authSlice";
 import { ILoginUser } from "@/common/interfaces";
 import { ErrorMessage } from "@hookform/error-message";
@@ -42,6 +42,8 @@ function SignIn() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const isError = useAppSelector(({ auth }) => auth.isError);
+
   const {
     register,
     handleSubmit,
@@ -50,6 +52,8 @@ function SignIn() {
     defaultValues: { email: "", password: "" },
     resolver: joiResolver(schema),
     criteriaMode: "all",
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
   });
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
@@ -117,6 +121,8 @@ function SignIn() {
           }}
         />
       </div>
+
+      {isError && <p className="auth__form-error">Wrong credentials</p>}
 
       <div className="auth__submit-container">
         <button className="auth__submit-btn">Sign In</button>

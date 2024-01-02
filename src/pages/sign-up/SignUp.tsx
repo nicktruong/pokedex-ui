@@ -1,4 +1,4 @@
-import { useAppDispatch } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { IRegisterUser } from "@/common/interfaces";
 import { ErrorMessage } from "@hookform/error-message";
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -23,7 +23,7 @@ const schema = Joi.object<IFormInput>({
       "string.base": "Email must be string",
       "string.empty": "Email must not be empty",
       "string.email": "Invaild email",
-      "string.max": "Email is too long (max 100 characters)",
+      "string.max": "Email is too long",
       "any.required": "Email is required",
     }),
   password: Joi.string()
@@ -44,8 +44,7 @@ const schema = Joi.object<IFormInput>({
     .messages({
       "string.base": "Name must be string",
       "string.empty": "Name must not be empty",
-      "string.pattern.base":
-        "Name must not contain any number or special character",
+      "string.pattern.base": "Invalid Name",
       "any.required": "Name is required",
     }),
 });
@@ -53,6 +52,8 @@ const schema = Joi.object<IFormInput>({
 function SignUp() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const isError = useAppSelector(({ auth }) => auth.isError);
 
   const {
     register,
@@ -62,6 +63,8 @@ function SignUp() {
     defaultValues: { email: "", password: "" },
     resolver: joiResolver(schema),
     criteriaMode: "all",
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
   });
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
@@ -159,6 +162,8 @@ function SignUp() {
           }}
         />
       </div>
+
+      {isError && <p className="auth__form-error">Wrong credentials</p>}
 
       <div className="auth__submit-container">
         <button className="auth__submit-btn">Sign Up</button>
