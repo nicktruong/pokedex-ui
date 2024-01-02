@@ -106,14 +106,14 @@
 .auth {
   background-color: #ffffff;
   display: flex;
-  /* align-items: center; */
-  max-width: 768px;
+  max-width: 384px;
   margin: 0 auto;
   border-radius: 16px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .auth__img-container {
+  display: none;
   flex: 1 0 50%;
 }
 
@@ -210,6 +210,16 @@
 .auth__signin-link {
   color: hsl(196, 100%, 44%);
   font-weight: 600;
+}
+
+@media screen and (min-width: 768px) {
+  .auth {
+    max-width: 768px;
+  }
+
+  .auth__img-container {
+    display: block;
+  }
 }
 
 /* Auth */
