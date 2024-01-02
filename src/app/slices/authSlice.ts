@@ -57,7 +57,11 @@ export const checkAuth = createAsyncThunk("auth/check", async () => {
 export const authSlice = createSlice({
   name: "auth",
   initialState: INITIAL_STATE,
-  reducers: {},
+  reducers: {
+    clearState() {
+      return INITIAL_STATE;
+    },
+  },
   extraReducers(builder) {
     // Login
     builder
@@ -104,5 +108,7 @@ export const authSlice = createSlice({
       });
   },
 });
+
+export const { clearState } = authSlice.actions;
 
 export default authSlice.reducer;
