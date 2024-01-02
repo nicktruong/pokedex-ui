@@ -6,7 +6,10 @@ import clsx from "clsx";
 import Joi from "joi";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { register as registerAccount } from "@/app/slices/authSlice";
+import {
+  clearState,
+  register as registerAccount,
+} from "@/app/slices/authSlice";
 
 interface IFormInput {
   email: string;
@@ -76,6 +79,10 @@ function SignUp() {
 
     await dispatch(registerAccount(payload));
     navigate("/sign-in");
+  };
+
+  const clearFormError = () => {
+    dispatch(clearState());
   };
 
   return (
@@ -169,7 +176,11 @@ function SignUp() {
         <button className="auth__submit-btn">Sign Up</button>
         <p className="auth__submit-signin">
           <span>Already have an account?</span>{" "}
-          <Link to="/sign-in" className="auth__signin-link">
+          <Link
+            to="/sign-in"
+            className="auth__signin-link"
+            onClick={clearFormError}
+          >
             Sign In
           </Link>
         </p>

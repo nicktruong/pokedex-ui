@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { login } from "@/app/slices/authSlice";
+import { clearState, login } from "@/app/slices/authSlice";
 import { ILoginUser } from "@/common/interfaces";
 import { ErrorMessage } from "@hookform/error-message";
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -66,6 +66,10 @@ function SignIn() {
     navigate("/");
   };
 
+  const clearFormError = () => {
+    dispatch(clearState());
+  };
+
   return (
     <form className="auth__form" onSubmit={handleSubmit(onSubmit)}>
       <h1 className="auth__form-header">Sign In</h1>
@@ -128,7 +132,11 @@ function SignIn() {
         <button className="auth__submit-btn">Sign In</button>
         <p className="auth__submit-signin">
           <span>Don't have an account?</span>{" "}
-          <Link to="/sign-up" className="auth__signin-link">
+          <Link
+            to="/sign-up"
+            className="auth__signin-link"
+            onClick={clearFormError}
+          >
             Sign Up
           </Link>
         </p>
